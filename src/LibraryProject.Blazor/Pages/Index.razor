@@ -1,0 +1,125 @@
+﻿@page "/"
+@inherits LibraryProjectComponentBase
+
+@inject NavigationManager NavigationManager
+
+<link href="css/animations.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<div class="welcome-container">
+    <div class="welcome-content">
+        <h1 class="welcome-title">
+            <i class="fas fa-book"></i>
+            Kütüphaneye Hoş Geldiniz!
+        </h1>
+        <p class="welcome-description">Kütüphane koleksiyonlarımızı keşfedin ve en sevdiğiniz kitapları bulun.</p>
+
+        <div class="button-container">
+            <button class="explore-button" @onclick="NavigateToBooks">
+                <i class="fas fa-search"></i> Keşfet
+            </button>
+
+            <button class="explore-button" @onclick="NavigateToUsers">
+                <i class="fas fa-users"></i> Kullanıcılar
+            </button>
+
+            <button class="explore-button" @onclick="NavigateToBuildings">
+                <i class="fas fa-building"></i> Bina
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .welcome-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background: radial-gradient(circle at center, #660099, transparent 70%), radial-gradient(circle at top left, black, transparent 70%), radial-gradient(circle at top right, black, transparent 70%), radial-gradient(circle at bottom left, black, transparent 70%), radial-gradient(circle at bottom right, black, transparent 70%);
+        overflow: hidden;
+        color: #fff;
+        text-align: center;
+        position: relative;
+    }
+
+    .welcome-content {
+        padding: 20px;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.1);
+        z-index: 2;
+    }
+
+    .welcome-title {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .welcome-title i {
+            color: #fff; /* Beyaz renk */
+            margin-right: 28px; /* İkon ile metin arasına boşluk */
+            font-size: 1.5em; /* İkon boyutu */
+        }
+
+    .welcome-description {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+        color: #fff; /* Beyaz renk */
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .explore-button {
+        padding: 8px 16px;
+        font-size: 1.1em;
+        color: #000;
+        background-color: #f4dd51;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .explore-button:hover {
+            background-color: #d1b44d; /* Arka plana uyumlu, daha az belirgin mor renk */
+            transform: scale(1.05); /* Buton üzerine gelindiğinde büyüme efekti */
+        }
+
+    .button-container i {
+        font-size: 1.2em;
+    }
+</style>
+
+@code {
+    private void NavigateToBooks()
+    {
+        NavigationManager.NavigateTo("/books");
+    }
+
+    private void NavigateToUsers()
+    {
+        NavigationManager.NavigateTo("https://localhost:44366/identity/users");
+    }
+
+    private void NavigateToBuildings()
+    {
+        NavigationManager.NavigateTo("/buildings");
+    }
+}

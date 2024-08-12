@@ -1,0 +1,85 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.Account": {
+      "version": "8.2.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "8.2.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.Identity": {
+      "version": "8.2.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "8.2.0",
+      "isInstalled": true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "LibraryProject.Application": {
+      "path": "src/LibraryProject.Application/LibraryProject.Application.abppkg",
+      "folder": "src"
+    },
+    "LibraryProject.Application.Tests": {
+      "path": "test/LibraryProject.Application.Tests/LibraryProject.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "LibraryProject.Domain.Shared": {
+      "path": "src/LibraryProject.Domain.Shared/LibraryProject.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "LibraryProject.Application.Contracts": {
+      "path": "src/LibraryProject.Application.Contracts/LibraryProject.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "LibraryProject.HttpApi": {
+      "path": "src/LibraryProject.HttpApi/LibraryProject.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "LibraryProject.HttpApi.Client": {
+      "path": "src/LibraryProject.HttpApi.Client/LibraryProject.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "LibraryProject.EntityFrameworkCore.Tests": {
+      "path": "test/LibraryProject.EntityFrameworkCore.Tests/LibraryProject.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "LibraryProject.EntityFrameworkCore": {
+      "path": "src/LibraryProject.EntityFrameworkCore/LibraryProject.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "LibraryProject.TestBase": {
+      "path": "test/LibraryProject.TestBase/LibraryProject.TestBase.abppkg",
+      "folder": "test"
+    },
+    "LibraryProject.Domain.Tests": {
+      "path": "test/LibraryProject.Domain.Tests/LibraryProject.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "LibraryProject.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/LibraryProject.HttpApi.Client.ConsoleTestApp/LibraryProject.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "LibraryProject.DbMigrator": {
+      "path": "src/LibraryProject.DbMigrator/LibraryProject.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "LibraryProject.Blazor": {
+      "path": "src/LibraryProject.Blazor/LibraryProject.Blazor.abppkg",
+      "folder": "src"
+    },
+    "LibraryProject.Domain": {
+      "path": "src/LibraryProject.Domain/LibraryProject.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}

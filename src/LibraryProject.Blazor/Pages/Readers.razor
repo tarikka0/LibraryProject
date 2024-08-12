@@ -1,0 +1,70 @@
+﻿@page "/Readers"
+@if (IsLoading)
+{
+    <div class="loader">
+        <div class="circle">
+            <div class="dot"></div>
+            <div class="outline"></div>
+        </div>
+        <div class="circle">
+            <div class="dot"></div>
+            <div class="outline"></div>
+        </div>
+        <div class="circle">
+            <div class="dot"></div>
+            <div class="outline"></div>
+        </div>
+        <div class="circle">
+            <div class="dot"></div>
+            <div class="outline"></div>
+        </div>
+    </div>
+}
+else
+{
+        @if (BookList?.Any() == true)
+        {
+                @foreach (var item in BookList)
+                {
+                    <div class="box">
+                        <img src="https://via.placeholder.com/150" alt="Resim 1">
+                        <p class="bilgi">@item.Name</p>
+                    </div>
+                }
+          
+        }
+   
+}
+<style scoped>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .box {
+        background-color: #5555;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+        .box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .box p {
+            margin: 10px 0 0;
+            color: white;
+        }
+</style>
+
+    

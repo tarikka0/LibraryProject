@@ -1,0 +1,96 @@
+﻿@page
+
+"/"
+@inherits LibraryProjectComponentBase
+
+@inject NavigationManager NavigationManager
+
+<div class="welcome-container" >
+<div class="welcome-content" >
+<h1 class="welcome-title" > Kütüphaneye Hoş Geldiniz!</h1 >
+<p class="welcome-description" > Kütüphane koleksiyonlarımızı keşfedin ve en sevdiğiniz kitapları bulun.</p >
+
+<div class="button-container" >
+<button class="explore-button" @onclick="NavigateToBooks" >
+<img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /></svg>" alt="Keşfet" class="button-icon" / >
+Keşfet
+</button >
+
+<button class="explore-button" @onclick="NavigateToUsers" >
+<img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5.121 19.121A3 3 0 015.25 17h13.5a3 3 0 01.128 2.121M15 13a4 4 0 10-6 0m6 0a4 4 0 11-6 0M12 2a10 10 0 100 20 10 10 0 000-20z' /></svg>" alt="Kullanıcılar" class="button-icon" / >
+Kullanıcılar
+</button >
+
+<button class="explore-button" @onclick="NavigateToBuildings" >
+<img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 6h.01M16 6h.01M12 6h.01M8 12h.01M12 12h.01M16 12h.01M21 10V5.25a2.25 2.25 0 00-2.25-2.25h-13.5A2.25 2.25 0 003 5.25V10M21 10v10.25a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 20.25V10M21 10H3' /></svg>" alt="Bina" class="button-icon" / >
+Bina
+</button >
+</div >
+</div >
+</div >
+
+<style >
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.welcome-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #000; /* Siyah arka plan */
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-content {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    z-index: 2;
+}
+
+.welcome-title {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.welcome-description {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.explore-button {
+    padding: 8px 16px;
+    font-size: 1.1em;
+    color: #000;
+    background-color: #f4dd51;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+    .explore-button:hover {
+        background-color: #e3aad6;
+    }
+
+.button-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}

@@ -1,0 +1,60 @@
+body {
+    background-color: black;
+    color: white; /* Ýsteðe baðlý: metin rengini beyaz yapar */
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+/* 
+    blazorise picker workaround for https://github.com/Megabit/Blazorise/issues/4917
+*/
+.flatpickr-calendar.static {
+    top: unset !important;
+}
+
+/* Global Styles */
+.welcome-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(128, 0, 128, 0.4), rgba(0, 255, 0, 0.4), rgba(128, 0, 128, 0.4), rgba(0, 255, 0, 0.4));
+    opacity: 0.5;
+    animation: aurora 20s ease-in-out infinite;
+    z-index: 1;
+    mix-blend-mode: overlay;
+    background-size: 200% 200%; /* Arka plan efekti için geniþlik ayarý */
+}
+
+@keyframes aurora {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}

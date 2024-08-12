@@ -1,0 +1,339 @@
+﻿@page "/books"
+@attribute [Authorize(LibraryProjectPermissions.Books.Default)]
+@using LibraryProject.Permissions
+@using Volo.Abp
+@using Volo.Abp.Application.Dtos
+@using LibraryProject.Books
+@using LibraryProject.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Components.Web
+@inject IStringLocalizer<LibraryProjectResource> L
+@inject AbpBlazorMessageLocalizerHelper<LibraryProjectResource> LH
+@inherits AbpCrudPageBase<IBookAppService, BookDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateBookDto>
+
+<div id="poda">
+
+    <div class="glow"></div>
+    <div class="darkBorderBg"></div>
+    <div class="darkBorderBg"></div>
+    <div class="darkBorderBg"></div>
+
+    <div class="white"></div>
+
+    <div class="border"></div>
+
+    <div id="main">
+        <input placeholder="Search..." type="text" name="text" class="input" @bind="searchText" @oninput="@(async (e) => await SearchBooksAsync(e))" />
+        <div id="input-mask"></div>
+        <div id="pink-mask"></div>
+        <div class="filterBorder"></div>
+        <div id="filter-icon">
+            <svg preserveAspectRatio="none"
+                 height="27"
+                 width="27"
+                 viewBox="4.8 4.56 14.832 15.408"
+                 fill="none">
+                <path d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z"
+                      stroke="#d6d6e6"
+                      stroke-width="1"
+                      stroke-miterlimit="10"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+            </svg>
+        </div>
+        <div id="search-icon">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="24"
+                 viewBox="0 0 24 24"
+                 stroke-width="2"
+                 stroke-linejoin="round"
+                 stroke-linecap="round"
+                 height="24"
+                 fill="none"
+                 class="feather feather-search">
+                <circle stroke="url(#search)" r="8" cy="11" cx="11"></circle>
+                <line stroke="url(#searchl)"
+                      y2="16.65"
+                      y1="22"
+                      x2="16.65"
+                      x1="22"></line>
+                <defs>
+                    <linearGradient gradientTransform="rotate(50)" id="search">
+                        <stop stop-color="#f8e7f8" offset="0%"></stop>
+                        <stop stop-color="#b6a9b7" offset="50%"></stop>
+                    </linearGradient>
+                    <linearGradient id="searchl">
+                        <stop stop-color="#b6a9b7" offset="0%"></stop>
+                        <stop stop-color="#837484" offset="50%"></stop>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    </div>
+</div>
+<Card>
+    <CardHeader>
+
+       
+        
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h2>@L["Books"]</h2>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                @if (HasCreatePermission)
+                {
+                    <Button Color="Color.Primary"
+                        Clicked="OpenCreateModalAsync">@L["NewBook"]</Button>
+                }
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>  
+       
+      
+
+        <DataGrid TItem="BookDto"
+                  Data="filteredBooks"
+                  ReadData="OnDataGridReadAsync"
+                  CurrentPage="CurrentPage"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+
+
+                <DataGridEntityActionsColumn TItem="BookDto" @ref="@EntityActionsColumn">
+               
+                    <DisplayTemplate>
+                        <EntityActions TItem="BookDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="BookDto"
+                                          Text="@L["Edit"]"
+                                          Visible=HasUpdatePermission
+                                          Clicked="() => OpenEditModalAsync(context)" />
+                            <EntityAction TItem="BookDto"
+                                          Text="@L["Delete"]"
+                                          Visible=HasDeletePermission
+                                          Clicked="() => DeleteEntityAsync(context)"
+                                          ConfirmationMessage="()=>GetDeleteConfirmationMessage(context)" />
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.AuthorName)"
+                                Caption="@L["Author"]"></DataGridColumn>
+                                    
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Name)"
+                                Caption="@L["Name"]"></DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Type)"
+                                Caption="@L["Type"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:BookType.{(int)context.Type}"]
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.PublishDate)"
+                                Caption="@L["PublishDate"]">
+                    <DisplayTemplate>
+                        @context.PublishDate.ToShortDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Price)"
+                                Caption="@L["Price"]">
+                </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.CreationTime)"
+                                Caption="@L["CreationTime"]">
+
+                    <DisplayTemplate>
+                        @context.CreationTime.ToLongDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+
+    </CardBody>
+
+</Card>
+
+<Modal @ref="@CreateModal">
+    <ModalBackdrop/>
+    <ModalContent IsCentered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["NewBook"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateModalAsync"/>
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Author"]</FieldLabel>
+                            <Select TValue="Guid" @bind-SelectedValue="@NewEntity.AuthorId">
+                                @foreach (var author in authorList)
+                                {
+                                    <SelectItem TValue="Guid" Value="@author.Id">
+                                        @author.Name
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                        <Field>
+                            <FieldLabel>@L["Name"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewEntity.Name">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Field>
+                        <FieldLabel>@L["Type"]</FieldLabel>
+                        <Select TValue="BookType" @bind-SelectedValue="@NewEntity.Type">
+                            @foreach (int bookTypeValue in Enum.GetValues(typeof(BookType)))
+                            {
+                                <SelectItem TValue="BookType" Value="@((BookType) bookTypeValue)">
+                                    @L[$"Enum:BookType.{bookTypeValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["PublishDate"]</FieldLabel>
+                        <DateEdit TValue="DateTime" @bind-Date="NewEntity.PublishDate"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Price"]</FieldLabel>
+                        <NumericEdit TValue="float" @bind-Value="NewEntity.Price"/>
+                    </Field>
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="CreateEntityAsync">@L["Save"]</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="@EditModal">
+    <ModalBackdrop/>
+    <ModalContent IsCentered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@EditingEntity.Name</ModalTitle>
+                <CloseButton Clicked="CloseEditModalAsync"/>
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Author"]</FieldLabel>
+                            <Select TValue="Guid" @bind-SelectedValue="@EditingEntity.AuthorId">
+                                @foreach (var author in authorList)
+                                {
+                                    <SelectItem TValue="Guid" Value="@author.Id">
+                                        @author.Name
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                        <Field>
+                            <FieldLabel>@L["Name"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingEntity.Name">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Field>
+                        <FieldLabel>@L["Type"]</FieldLabel>
+                        <Select TValue="BookType" @bind-SelectedValue="@EditingEntity.Type">
+                            @foreach (int bookTypeValue in Enum.GetValues(typeof(BookType)))
+                            {
+                                <SelectItem TValue="BookType" Value="@((BookType) bookTypeValue)">
+                                    @L[$"Enum:BookType.{bookTypeValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["PublishDate"]</FieldLabel>
+                        <DateEdit TValue="DateTime" @bind-Date="EditingEntity.PublishDate"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Price"]</FieldLabel>
+                        <NumericEdit TValue="float" @bind-Value="EditingEntity.Price"/>
+                    </Field>
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="UpdateEntityAsync">@L["Save"]</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    private string searchText = "";
+    private IReadOnlyList<BookDto> filteredBooks = Array.Empty<BookDto>();  
+
+    IReadOnlyList<AuthorLookupDto> authorList = Array.Empty<AuthorLookupDto>();
+    
+    public Books() // Constructor
+    {
+        CreatePolicyName = LibraryProjectPermissions.Books.Create;
+        UpdatePolicyName = LibraryProjectPermissions.Books.Edit;
+        DeletePolicyName = LibraryProjectPermissions.Books.Delete;
+        LocalizationResource = typeof(LibraryProjectResource);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LoadBooksAsync();
+        authorList = (await AppService.GetAuthorLookupAsync()).Items;
+    }
+    private async Task SearchBooksAsync(ChangeEventArgs e)
+    {
+        searchText = e.Value.ToString();
+        if (string.IsNullOrEmpty(searchText))
+        {
+            // Reset to all books if search text is empty
+            filteredBooks = Entities;
+            return;
+        }
+        filteredBooks = Entities.Where(book => book.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
+                                                book.AuthorName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                                  .ToList(); // Create a filtered copy
+    }
+    private async Task LoadBooksAsync()
+    {
+        var result = await AppService.GetListAsync(new PagedAndSortedResultRequestDto());
+        Entities = result.Items;
+        filteredBooks = Entities; // Initially show all books
+    }
+    protected override async Task OpenCreateModalAsync()
+    {
+        if (!authorList.Any())
+        {
+            throw new UserFriendlyException(message: L["AnAuthorIsRequiredForCreatingBook"]);
+        }
+
+        await base.OpenCreateModalAsync();
+        NewEntity.AuthorId = authorList.First().Id;
+    }
+}

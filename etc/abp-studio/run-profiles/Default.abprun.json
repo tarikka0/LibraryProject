@@ -1,0 +1,10 @@
+﻿{
+  "applications": {
+    "LibraryProject.Blazor": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44366",
+      "path": "../../../src/LibraryProject.Blazor/LibraryProject.Blazor.csproj",
+      "kubernetesService": ".*-blazorserver$"
+}
+  }
+}
